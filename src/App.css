@@ -1,38 +1,286 @@
-.App {
-  text-align: center;
+/* Register Page */
+body{
+  margin:0;
+  padding:0;
+  font-family:Arial, Helvetica, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.main{
+  height:100vh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:#dfe3ee;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.register-box{
+  width:350px;
+
+  background:#1f2a56;
+
+  padding:40px;
+
+  border-radius:25px;
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+
+  box-shadow:0px 15px 40px rgba(0,0,0,0.3);
+
+  position:relative;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.register-box h1{
+  color:white;
+
+  margin-bottom:30px;
+
+  font-size:40px;
 }
 
-.App-link {
-  color: #61dafb;
+.register-box input{
+  width:100%;
+
+  padding:14px;
+
+  margin-bottom:18px;
+
+  border:none;
+
+  border-radius:10px;
+
+  background:#f1f1f1;
+
+  font-size:15px;
+
+  outline:none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.register-box button{
+  width:100%;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:10px;
+
+  background:#2d3d7b;
+
+  color:white;
+
+  font-size:17px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  margin-top:10px;
+
+  transition:0.3s;
 }
+
+.register-box button:hover{
+  background:#4054a5;
+}
+
+.register-box p{
+  color:white;
+
+  margin-top:20px;
+
+  margin-bottom:10px;
+}
+
+/* Login page */
+body{
+  margin:0;
+  padding:0;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.full-page{
+  height:100vh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:#dfe3ee;
+
+  overflow:hidden;
+}
+
+.background-card{
+  width:700px;
+  height:500px;
+
+  background:#1f2a56;
+
+  border-radius:25px;
+
+  position:relative;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  box-shadow:0px 15px 40px rgba(0,0,0,0.3);
+
+  overflow:hidden;
+}
+
+/* LOGIN FORM */
+
+.login-form{
+  width:280px;
+
+  background:white;
+
+  padding:35px;
+
+  border-radius:20px;
+
+  display:flex;
+  flex-direction:column;
+
+  z-index:10;
+
+  box-shadow:0px 10px 25px rgba(0,0,0,0.2);
+}
+
+.login-form h1{
+  text-align:center;
+
+  margin-bottom:25px;
+
+  color:#111;
+
+  font-size:42px;
+}
+
+.login-form input{
+  padding:14px;
+
+  margin-bottom:18px;
+
+  border:1px solid #ccc;
+
+  border-radius:8px;
+
+  outline:none;
+
+  font-size:14px;
+}
+
+.login-form button{
+  padding:14px;
+
+  border:none;
+
+  border-radius:8px;
+
+  background:#1f2a56;
+
+  color:white;
+
+  font-size:16px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  margin-top:10px;
+
+  transition:0.3s;
+}
+
+.login-form button:hover{
+  background:#32448b;
+}
+
+.login-form p{
+  text-align:center;
+
+  margin-top:20px;
+
+  margin-bottom:5px;
+
+  color:#444;
+}
+
+/* GEARS */
+
+.gear{
+  position:absolute;
+
+  font-size:120px;
+
+  opacity:0.7;
+}
+
+.gear1{
+  color:#ff9d5c;
+
+  left:40px;
+  top:180px;
+
+  transform:rotate(20deg);
+}
+
+.gear2{
+  color:#9b59ff;
+
+  right:40px;
+  bottom:40px;
+
+  transform:rotate(-20deg);
+}
+
+/* FLOATING STICKS */
+
+.floating{
+  position:absolute;
+
+  width:60px;
+  height:12px;
+
+  border-radius:20px;
+
+  transform:rotate(45deg);
+}
+
+.one{
+  background:#ff9d5c;
+
+  top:80px;
+  right:120px;
+}
+
+.two{
+  background:#ff66cc;
+
+  left:80px;
+  top:150px;
+}
+
+.three{
+  background:#b266ff;
+
+  left:140px;
+  bottom:70px;
+}
+
+.four{
+  background:#ffffff;
+
+  right:180px;
+  top:140px;
+}
+
+/* Todo Design */
+
