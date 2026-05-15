@@ -13,7 +13,7 @@ function Todos() {
 
   const navigate = useNavigate();
 
-  const token =localStorage.getItem("token");
+  const token = localStorage.getItem("accessToken");
 
   const getTodos = async () => {
 
@@ -119,74 +119,128 @@ function Todos() {
 
   const logout = () => {
 
-    localStorage.removeItem("token");
+   localStorage.removeItem("accessToken");
+
+localStorage.removeItem("refreshToken");
 
     navigate("/login");
   };
 
-  return (
-    <div>
+ return (
+  <div className="todo-container">
 
-      <h1>Todo App</h1>
+    <div className="todo-wrapper">
 
-      <button onClick={logout}>
+      <h1>
+        MY TO DO LIST
+      </h1>
+
+      <button
+        className="logout-btn"
+        onClick={logout}
+      >
         Logout
       </button>
 
-      <br /><br />
+      <div className="todo-input-box">
 
-      <input
-        type="text"
-        placeholder="Enter Todo"
-        value={text}
-        onChange={(e) =>
-          setText(e.target.value)
-        }
-      />
+        <input
+          type="text"
+          placeholder="Enter your todo to do"
+          value={text}
+          onChange={(e) =>
+            setText(e.target.value)
+          }
+        />
 
-      <button onClick={createTodo}>
-        Add Todo
-      </button>
+        <button onClick={createTodo}>
+          Save
+        </button>
 
-      <br /><br />
+      </div>
+
+      <div className="todo-status-box">
+
+        <div className="status-card">
+
+          Todo Done :
+          {
+            todos.filter(
+              (todo) =>
+                todo.status === "success"
+            ).length
+          }
+
+        </div>
+
+        <div className="status-card">
+
+          Todo On Progress :
+          {
+            todos.filter(
+              (todo) =>
+                todo.status === "pending"
+            ).length
+          }
+
+        </div>
+
+      </div>
 
       {
         todos.map((todo) => (
 
-          <div key={todo._id}>
+          <div
+            className="todo-card"
+            key={todo._id}
+          >
 
-            <h3>
+            <span>
               {todo.text}
-            </h3>
+            </span>
 
-            <p>
-              {todo.status}
-            </p>
+            <div className="todo-actions">
 
-            <button
-              onClick={() =>
-                updateTodo(todo._id)
-              }
-            >
-              Update
-            </button>
+             <button
+  className={
+    todo.status === "success"
+    ? "done-btn"
+    : "pending-btn"
+  }
 
-            <button
-              onClick={() =>
-                deleteTodo(todo._id)
-              }
-            >
-              Delete
-            </button>
+  onClick={() =>
+    updateTodo(todo._id)
+  }
 
-            <hr />
+>
+
+  {
+    todo.status === "success"
+    ? "✓ Done"
+    : "Pending"
+  }
+
+</button>
+
+              <button
+                className="delete-btn"
+                onClick={() =>
+                  deleteTodo(todo._id)
+                }
+              >
+                🗑
+              </button>
+
+            </div>
 
           </div>
         ))
       }
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Todos;
