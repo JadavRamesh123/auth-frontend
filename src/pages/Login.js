@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "./axiosInstance";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 
@@ -30,7 +30,7 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post(
+      const res = await api.post(
         "http://localhost:3000/loginUser",
         formData
       );

@@ -1,62 +1,65 @@
-import {useEffect,useState} from "react";
+import { useEffect, useState } from "react";
 
-import axios from "axios";
+import api from "./axiosInstance";
 
 import { useNavigate } from "react-router-dom";
+
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
+
 import "../App.css";
 
 function Todos() {
 
-  const [todos, setTodos] =useState([]);
+  const [todos, setTodos] = useState([]);
 
-  const [text, setText] =useState("");
+  const [text, setText] = useState("");
 
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("accessToken");
-
+  // GET TODOS
   const getTodos = async () => {
 
     try {
 
-      const res = await axios.get("http://localhost:3000/getTodos",
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await api.get("/getTodos");
 
       setTodos(res.data.todos);
 
     } catch (err) {
 
-      alert(err.response.data.message);
+      toast.error("Failed To Fetch Todos ❌");
 
     }
   };
 
   useEffect(() => {
+
     getTodos();
+
   }, []);
 
+  // CREATE TODO
   const createTodo = async () => {
 
     try {
 
-      await axios.post("http://localhost:3000/createTodo",
-        {
-          text,
-          status: "pending",
-        },
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`,
-          },
-        }
-      );
+      if (!text.trim()) {
+
+        toast.error("Please Enter Todo");
+
+        return;
+
+      }
+
+      await api.post("/createTodo", {
+        text,
+        status: "pending",
+      });
+
+      toast.success("Todo Added Successfully ✅");
 
       setText("");
 
@@ -64,183 +67,186 @@ function Todos() {
 
     } catch (err) {
 
-      alert(err.response.data.message);
+      toast.error(
+        err.response?.data?.message ||
+        "Failed To Add Todo ❌"
+      );
 
     }
   };
 
-
+  // UPDATE TODO
   const updateTodo = async (id) => {
 
     try {
 
-      await axios.patch(`http://localhost:3000/updateTodo/${id}`,
-        {
-          status: "success",
-        },
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`,
-          },
-        }
-      );
+      await api.patch(`/updateTodo/${id}`, {
+        status: "success",
+      });
+
+      toast.success("Todo Completed ✅");
 
       getTodos();
 
     } catch (err) {
 
-      alert(err.response.data.message);
+      toast.error("Failed To Update Todo ❌");
 
     }
   };
 
+  // DELETE TODO
   const deleteTodo = async (id) => {
 
     try {
 
-      await axios.delete(`http://localhost:3000/deleteTodo/${id}`,
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`,
-          },
-        }
-      );
+      await api.delete(`/deleteTodo/${id}`);
+
+      toast.success("Todo Deleted 🗑");
 
       getTodos();
 
     } catch (err) {
 
-      alert(err.response.data.message);
+      toast.error("Failed To Delete Todo ❌");
 
     }
   };
 
+  // LOGOUT
   const logout = () => {
 
-   localStorage.removeItem("accessToken");
+    localStorage.removeItem("accessToken");
 
-localStorage.removeItem("refreshToken");
+    localStorage.removeItem("refreshToken");
+
+    toast.success("Logged Out");
 
     navigate("/login");
+
   };
 
- return (
-  <div className="todo-container">
+  return (
 
-    <div className="todo-wrapper">
+    <div className="todo-container">
 
-      <h1>
-        MY TO DO LIST
-      </h1>
+      <div className="todo-wrapper">
 
-      <button
-        className="logout-btn"
-        onClick={logout}
-      >
-        Logout
-      </button>
+        <h1>
+          MY TO DO LIST
+        </h1>
 
-      <div className="todo-input-box">
-
-        <input
-          type="text"
-          placeholder="Enter your todo to do"
-          value={text}
-          onChange={(e) =>
-            setText(e.target.value)
-          }
-        />
-
-        <button onClick={createTodo}>
-          Save
+        <button
+          className="logout-btn"
+          onClick={logout}
+        >
+          Logout
         </button>
 
-      </div>
+        <div className="todo-input-box">
 
-      <div className="todo-status-box">
+          <input
+            type="text"
+            placeholder="Enter your todo"
+            value={text}
+            onChange={(e) =>
+              setText(e.target.value)
+            }
+          />
 
-        <div className="status-card">
-
-          Todo Done :
-          {
-            todos.filter(
-              (todo) =>
-                todo.status === "success"
-            ).length
-          }
-
-        </div>
-
-        <div className="status-card">
-
-          Todo On Progress :
-          {
-            todos.filter(
-              (todo) =>
-                todo.status === "pending"
-            ).length
-          }
+          <button onClick={createTodo}>
+            Save
+          </button>
 
         </div>
 
-      </div>
+        <div className="todo-status-box">
 
-      {
-        todos.map((todo) => (
+          <div className="status-card">
 
-          <div
-            className="todo-card"
-            key={todo._id}
-          >
-
-            <span>
-              {todo.text}
-            </span>
-
-            <div className="todo-actions">
-
-             <button
-  className={
-    todo.status === "success"
-    ? "done-btn"
-    : "pending-btn"
-  }
-
-  onClick={() =>
-    updateTodo(todo._id)
-  }
-
->
-
-  {
-    todo.status === "success"
-    ? "✓ Done"
-    : "Pending"
-  }
-
-</button>
-
-              <button
-                className="delete-btn"
-                onClick={() =>
-                  deleteTodo(todo._id)
-                }
-              >
-                🗑
-              </button>
-
-            </div>
+            Todo Done :
+            {
+              todos.filter(
+                (todo) =>
+                  todo.status === "success"
+              ).length
+            }
 
           </div>
-        ))
-      }
+
+          <div className="status-card">
+
+            Todo On Progress :
+            {
+              todos.filter(
+                (todo) =>
+                  todo.status === "pending"
+              ).length
+            }
+
+          </div>
+
+        </div>
+
+        {
+          todos.map((todo) => (
+
+            <div
+              className="todo-card"
+              key={todo._id}
+            >
+
+              <span>
+                {todo.text}
+              </span>
+
+              <div className="todo-actions">
+
+                <button
+                  className={
+                    todo.status === "success"
+                      ? "done-btn"
+                      : "pending-btn"
+                  }
+
+                  onClick={() =>
+                    updateTodo(todo._id)
+                  }
+
+                >
+
+                  {
+                    todo.status === "success"
+                      ? "✓ Done"
+                      : "Pending"
+                  }
+
+                </button>
+
+                <button
+                  className="delete-btn"
+                  onClick={() =>
+                    deleteTodo(todo._id)
+                  }
+                >
+                  🗑
+                </button>
+
+              </div>
+
+            </div>
+          ))
+        }
+
+      </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+      />
 
     </div>
-
-  </div>
-);
+  );
 }
 
 export default Todos;

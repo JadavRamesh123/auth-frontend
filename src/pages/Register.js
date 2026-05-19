@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "./axiosInstance";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 
@@ -29,7 +29,7 @@ function Register() {
 
   const handleRegister = async () => {
     try {
-      await axios.post("http://localhost:3000/register", formData);
+      await api.post("http://localhost:3000/register", formData);
 
       setErrors({});
       setFormData({
@@ -83,7 +83,6 @@ function Register() {
     <div className="main">
       <div className="register-box">
         <h1>Register</h1>
-
        
         <input
           type="text"
